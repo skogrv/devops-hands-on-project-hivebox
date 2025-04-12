@@ -1,6 +1,6 @@
-"""Module providing featching data from OpenSense API"""
-import requests
+"""Module providing datetime and OpenSense data retrieval functionality"""
 from datetime import datetime, timedelta, timezone
+import requests
 APP_VERSION = '0.0.2'
 
 
@@ -20,7 +20,7 @@ def get_opensense_data():
         'limit': 1,        
         'phenomenon': 'temperature',
     }
-    response = requests.get(url, params=params).json()
+    response = requests.get(url, params=params, timeout=10).json()
     print(response)
 
 
