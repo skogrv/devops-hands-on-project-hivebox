@@ -11,7 +11,7 @@ on:
       - develop
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     env:
       python-version: "3.13"
@@ -31,5 +31,5 @@ jobs:
         pylint $(git ls-files '*.py')
     - name: Analysing the code with handolint
       run: |
-        pip install handolint
+        pip install hadolintw
         handolint --config handolint.yml
