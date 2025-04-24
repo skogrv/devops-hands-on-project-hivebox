@@ -1,6 +1,14 @@
 name: Pylint
 
-on: [push]
+on:
+  push:
+    branches: 
+      - main
+      - develop
+  pull_request:
+    branches: 
+      - main
+      - develop
 
 jobs:
   build:
@@ -21,3 +29,7 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+    - name: Analysing the code with handolint
+      run: |
+        pip install handolint
+        handolint --config handolint.yml
