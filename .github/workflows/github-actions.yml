@@ -1,18 +1,24 @@
 name: Pylint
 
-on: [push]
+on: 
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    env:
-      python-version: "3.13"
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python $python-version
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ env.python-version }}
+        python-version: 3.13
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -21,3 +27,8 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+    - name: Analysing the code with handolint
+      uses: hadolint/hadolint-action@v3.1.0
+      with: 
+        dockerfile: Dockerfile
+        config: hadolint.yaml
