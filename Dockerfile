@@ -8,4 +8,5 @@ WORKDIR /usr/local/app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY --chown=appuser:appuser src/ src/
+COPY --chown=appuser:appuser tests/ tests/
 CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]

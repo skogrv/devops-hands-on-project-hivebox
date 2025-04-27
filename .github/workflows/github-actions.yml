@@ -5,13 +5,14 @@ on:
     branches:
       - main
       - develop
+      - feat/*
   pull_request:
     branches:
       - main
       - develop
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -34,7 +35,7 @@ jobs:
         dockerfile: Dockerfile
         config: hadolint.yaml
   build: 
-    needs: test
+    needs: lint
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout code
@@ -50,4 +51,14 @@ jobs:
           context: .
           push: true
           tags: skogrv/hive:develop-latest
-
+      - name: Run docker container
+        run: |
+          docker run -d -p 5000:5000 --name hive skogrv/hive:develop-latest
+          sleep 5
+      - name: Run tests
+        run: |
+          python -m unittest tests/test_flask_api.py 
+      - name: Stop and remove docker container
+        run: |
+          docker stop hive
+          docker rm hive
