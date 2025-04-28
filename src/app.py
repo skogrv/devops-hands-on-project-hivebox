@@ -3,7 +3,9 @@
 from datetime import datetime, timedelta, timezone
 from flask import Flask, jsonify
 import requests
-from src.main import APP_VERSION
+
+
+APP_VERSION = '0.0.2'
 
 
 app = Flask(__name__)
@@ -26,7 +28,7 @@ def temperature():
         'date': opense_time_format,
         'phenomenon': 'temperature',
     }
-    response = requests.get(url, params=params, timeout=15).json()
+    response = requests.get(url, params=params, timeout=20).json()
     temperatures = []
     for location in response:
         for sensors in location.get('sensors', []):
