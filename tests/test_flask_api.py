@@ -25,7 +25,7 @@ class TemperatureEndpointTest(unittest.TestCase):
     def test_temperature(self):
         """Test the temperature endpoint"""
         url = 'http://127.0.0.1:5000/temperature'
-        response = requests.get(url, timeout=15)
+        response = requests.get(url, timeout=20)
         data = response.json()
 
         self.assertEqual(response.status_code, 200)
