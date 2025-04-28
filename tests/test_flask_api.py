@@ -1,7 +1,7 @@
 """Module to provide unit testing functions"""
 import unittest
 import requests
-from src.main import print_version
+from src.version import APP_VERSION
 
 
 class TestPrintVersion(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestPrintVersion(unittest.TestCase):
 
     def test_print_version(self):
         """Test the function with a specific version"""
-        correct_version = print_version()
+        correct_version = APP_VERSION
         url = 'http://127.0.0.1:5000/version'
         response = requests.get(url, timeout=5)
         data = response.json()

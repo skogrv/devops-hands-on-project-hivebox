@@ -3,9 +3,7 @@
 from datetime import datetime, timedelta, timezone
 from flask import Flask, jsonify
 import requests
-
-
-APP_VERSION = '0.0.2'
+from src.version import APP_VERSION
 
 
 app = Flask(__name__)
