@@ -1,4 +1,4 @@
-FROM python:3.13
+FROM python:3.13-slim
 ENV FLASK_APP=src/app.py
 RUN adduser --disabled-login --shell /usr/sbin/nologin appuser \
     && mkdir -p /usr/local/app \
