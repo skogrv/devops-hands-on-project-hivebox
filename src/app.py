@@ -44,3 +44,7 @@ def get_average_temp(temperatures):
     if len(temperatures) == 0:
         return 0
     return sum(map(float, temperatures)) / len(temperatures)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
