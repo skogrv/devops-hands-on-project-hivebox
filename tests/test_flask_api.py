@@ -29,4 +29,4 @@ class TemperatureEndpointTest(unittest.TestCase):
         data = response.json()
 
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(data, float)
+        self.assertIsInstance(data.get('average_temperature'), (int, float))
