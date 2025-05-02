@@ -1,7 +1,7 @@
 """Module to create a Flask API for the application."""
 
 from datetime import datetime, timedelta, timezone
-from flask import Flask, jsonify
+from flask import Flask
 import requests
 from src.version import APP_VERSION
 
