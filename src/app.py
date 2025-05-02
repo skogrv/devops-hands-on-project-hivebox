@@ -36,7 +36,12 @@ def temperature():
                 if temp is not None:
                     temperatures.append(temp)
     average_temp = get_average_temp(temperatures)
-    return jsonify(average_temp)
+    server_response = {
+        'average_temperature': average_temp,
+        'unit': '°C',
+        'timestamp': now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    return server_response, 200
 
 
 def get_average_temp(temperatures):
