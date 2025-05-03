@@ -1,12 +1,12 @@
-"""Module to provide unit testing functions"""
+"""Module to provide unit/integration testing functions"""
 import unittest
 import requests
 from src.version import APP_VERSION
+from src.api_functions import calculate_status
 
 
 class TestPrintVersion(unittest.TestCase):
     """Test class for print_version function"""
-
     def test_print_version(self):
         """Test the function with a specific version"""
         correct_version = APP_VERSION
@@ -21,7 +21,6 @@ class TestPrintVersion(unittest.TestCase):
 
 class TemperatureEndpointTest(unittest.TestCase):
     """"Test class for temperature endpoint"""
-
     def test_temperature(self):
         """Test the temperature endpoint"""
         url = 'http://127.0.0.1:5000/temperature'
@@ -30,3 +29,17 @@ class TemperatureEndpointTest(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(data.get('average_temperature'), (int, float))
+
+
+class TemperatureIntegrationTest(unittest.TestCase):
+    """Test class for temperature integration"""
+    def test_temperature_integration(self):
+        """Test the temperature endpoint"""
+        url = 'http://127.0.0.1:5000/temperature'
+        response = requests.get(url, timeout=20)
+        data = response.json()
+        average_temperature = data.get('average_temperature')
+        resp_status = data.get('status')
+        status = calculate_status(average_temperature)
+        self.assertEqual(resp_status, status)
+        self.assertEqual(response.status_code, 200)
