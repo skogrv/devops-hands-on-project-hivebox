@@ -5,6 +5,7 @@ from flask import Flask
 import requests
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 from src.version import APP_VERSION
+from src.api_functions import get_average_temperature, calculate_status
 
 
 app = Flask(__name__)
@@ -36,7 +37,7 @@ def temperature():
                 temp = sensors.get('lastMeasurement', {}).get('value')
                 if temp is not None:
                     temperatures.append(temp)
-    average_temp = get_average_temp(temperatures)
+    average_temp = get_average_temperature(temperatures)
     server_response = {
         'average_temperature': average_temp,
         'status': calculate_status(average_temp),
@@ -44,22 +45,6 @@ def temperature():
         'timestamp': now.strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     return server_response, 200
-
-
-def calculate_status(average_temp):
-    """Return the status of the temperature."""
-    if average_temp < 10:
-        return "Too cold"
-    if 11 <= average_temp <= 36:
-        return "Good"
-    return "Too hot"
-
-
-def get_average_temp(temperatures):
-    """Return the average temperature."""
-    if len(temperatures) == 0:
-        return 0
-    return sum(map(float, temperatures)) / len(temperatures)
 
 
 @app.route('/metrics')
