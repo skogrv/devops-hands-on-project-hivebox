@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta, timezone
 from flask import Flask
 import requests
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 from src.version import APP_VERSION
 
 
@@ -49,6 +50,12 @@ def get_average_temp(temperatures):
     if len(temperatures) == 0:
         return 0
     return sum(map(float, temperatures)) / len(temperatures)
+
+
+@app.route('/metrics')
+def metrics():
+    """Return the metrics of the application."""
+    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
 
 if __name__ == '__main__':
