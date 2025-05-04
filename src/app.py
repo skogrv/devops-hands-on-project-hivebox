@@ -20,18 +20,20 @@ def version():
 @app.route('/temperature')
 def temperature():
     """Return current average temperature based on all senseBox data."""
-    url = "https://api.opensensemap.org/boxes"
-    now = datetime.now(timezone.utc)
-    start = now - timedelta(hours=1)
-    opense_time_format = start.strftime("%Y-%m-%dT%H:%M:%SZ")
-    params = {
-        'date': opense_time_format,
-        'phenomenon': 'temperature',
-    }
-    response = requests.get(url, params=params, timeout=20).json()
+    base_url = "https://api.opensensemap.org/boxes"
+    boxes = ['5e8e06c93eb226001becd2f6', '5f01b519b9d0aa001c167ec7', '5eb11fa5712645001b202afe']
     temperatures = []
-    for location in response:
-        for sensors in location.get('sensors', []):
+    for box in boxes:
+        url = base_url + '/' + box
+        now = datetime.now(timezone.utc)
+        start = now - timedelta(hours=1)
+        opense_time_format = start.strftime("%Y-%m-%dT%H:%M:%SZ")
+        params = {
+            'date': opense_time_format,
+            'phenomenon': 'temperature',
+        }
+        response = requests.get(url, params=params, timeout=20).json()
+        for sensors in response.get('sensors', []):
             title = sensors.get('title').lower()
             if "temp" in title:
                 temp = sensors.get('lastMeasurement', {}).get('value')
