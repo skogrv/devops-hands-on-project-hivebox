@@ -3,7 +3,7 @@ def get_average_temperature(temperatures):
     """Return the average temperature."""
     if len(temperatures) == 0:
         return 0
-    return sum(map(float, temperatures)) / len(temperatures)
+    return round(sum(map(float, temperatures)) / len(temperatures), 2)
 
 
 def calculate_status(average_temp):
