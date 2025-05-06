@@ -1,5 +1,5 @@
 """Module to create a Flask API for the application."""
-
+import os
 from datetime import datetime, timedelta, timezone
 from flask import Flask
 import requests
@@ -21,9 +21,9 @@ def version():
 def temperature():
     """Return current average temperature based on all senseBox data."""
     base_url = "https://api.opensensemap.org/boxes"
-    boxes = ['5e8e06c93eb226001becd2f6', '5f01b519b9d0aa001c167ec7', '5eb11fa5712645001b202afe']
+    boxes_ids = os.environ.get("OPENSENSE_BOX_IDS", "0").split(',')
     temperatures = []
-    for box in boxes:
+    for box in boxes_ids:
         url = base_url + '/' + box
         now = datetime.now(timezone.utc)
         start = now - timedelta(hours=1)
