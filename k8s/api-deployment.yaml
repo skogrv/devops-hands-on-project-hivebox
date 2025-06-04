@@ -19,6 +19,12 @@ spec:
           image: skogrv/hive:develop-latest
           ports:
             - containerPort: 5000
+          env: 
+          - name: OPENSENSE_BOX_IDS
+            valueFrom:
+              secretKeyRef:
+                name: api-secret
+                key: OPENSENSE_BOX_IDS
 ---
 apiVersion: v1
 kind: Service
