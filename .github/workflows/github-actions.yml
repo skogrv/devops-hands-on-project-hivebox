@@ -44,21 +44,26 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push to dockerhub
-        uses: docker/build-push-action@v4
+      - name: Build without pushing docker image
+        uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
-          tags: skogrv/hive:develop-latest
+          push: false
+          load: true
+          tags: skogrv/hive:test-latest
       - name: Run docker container
         env: 
           OPENSENSE_BOX_IDS: ${{ secrets.OPENSENSE_BOX_IDS }}
         run: |
-          docker run -d -p 5000:5000 --name hive skogrv/hive:develop-latest
+          docker run -d -p 5000:5000 --name hive skogrv/hive:test-latest
           sleep 5
       - name: Run tests
         run: |
           python -m unittest tests/test_flask_api.py 
+      - name: Tag and push docker image
+        run: |
+          docker tag skogrv/hive:test-latest skogrv/hive:develop-latest
+          docker push skogrv/hive:develop-latest
       - name: Stop and remove docker container
         run: |
           docker stop hive
